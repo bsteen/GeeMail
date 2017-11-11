@@ -1,4 +1,15 @@
 #include "login.hpp"
+#include "encrypt.hpp"
+#include "sqlite3_driver.hpp"
+
+login_package attempt_login(){
+    
+}
+
+void attempt_register(){
+    login_package user_info = request_input();
+    
+}
 
 login_package request_input(){
     size_t bytes = 30;
@@ -44,3 +55,4 @@ bool valid_credentials(string username, string password, size_t bytes){       //
     }
     return true;
 }
+

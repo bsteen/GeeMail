@@ -5,31 +5,11 @@ if you want a level 2.) Then ask if they want to read messages or write messages
 with that receipient. When they read a message let them select the message somehow, then prompt them for the shared passphrase with that receipient, then show a plaintext message.
 IMPORTANT: do not ever store passwords, messages, or passphrases in plaintext, this is an encrypted messaging system. The rule sets in play for this stage are FIO and ERR.
 
-Step 1: Make the database
-Needs to store:
-    -User name and login password
-    -List of emials
-        - The person who sent it
-        - The time stamped messages (for mutiple senders)
-    -Email shoudld have sender and reciever, time sent, read/unread, salted password + salt 
-        -If enough time, make a delete emial option
-    
-Step 2: Make login system
-    -Enter user/name
-        -Ask for user name
-        -Ask for password
-        -Hash and salt password and compared to stored hash(password + salt)
-    -Create new user
-        -Enter username
-            -Check if it is already created
-        -Ask for password
-        -Ask for password again
-        -Create database entry
-        -Generate and store salt
-        -Store username and hashed password + salt
-    
-Step 3: Read email system
-    -
+To do:
 
-Step 4: Send email system
-    -
+Casey:
+- input sanitization for logged-in instructions
+    
+- Make email.cpp
+    -Reading, writing, deleting email
+    -Calls the encryption functions as needed

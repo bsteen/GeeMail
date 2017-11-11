@@ -143,14 +143,14 @@ void sql_driver::insert_user(string tableName,User_t newUser){
     const char* tname = tableName.c_str();
     const char* username = newUser.username.c_str();
     const char* password = newUser.password.c_str();
-    const int salt    = newUser.salt;
+    const char* salt    = newUser.salt.c_str();
     int id = 0;
     
     char * sql_cmd;
           /* Create SQL statement */
     sprintf(buffer,
     "INSERT INTO %s (username,password,salt)"\
-    "VALUES ('%s', '%s', '%d');",
+    "VALUES ('%s', '%s', '%s');",
     tname,username,password,salt);
     sql_cmd = buffer;
    /* Execute SQL statement */
@@ -166,13 +166,13 @@ void sql_driver::insert_email(string tableName,Message_t email){
     const char * mssg = email.message.c_str();
     // const char *  rd  = email.read.c_str();
     const char * pass = email.password.c_str();
-    // const char * slt = salt.c_str();
+    const char * slt = email.salt.c_str();
     char buffer[500];
     char * sql_cmd;
     sprintf(buffer,
     "INSERT INTO %s (receiver,sender,time_stamp,message,read,password,salt)"\
-    "VALUES ('%s','%s','%s','%s','%d','%s','%d');",
-    tname,rcvr,sndr,t_s,mssg,email.read,pass,email.salt);
+    "VALUES ('%s','%s','%s','%s','%d','%s','%s');",
+    tname,rcvr,sndr,t_s,mssg,email.read,pass,slt);
     
     sql_cmd = buffer;
     execute_cmd(sql_cmd,"Failed to insert element to email table: %s\n",0);
