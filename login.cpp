@@ -1,14 +1,59 @@
 #include "login.hpp"
-#include "encrypt.hpp"
-#include "sqlite3_driver.hpp"
+#include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
 
-login_package attempt_login(){
-    
+login_package attempt_login(const char *databaseName, string tableName){
+    sql_driver driver;
+    driver.open_database(databaseName);
+    login_package user_info = request_input();
+    bool login_correct = false;
+    if(user_info.correct_format){
+        lowercase_convert(user_info.username);
+        
+        vector<bucket8_t> table_information;
+        driver.conditional_search("Users", "username", user_info.username, table_information);
+        if(table_information.size() == 1){
+            user_info.password = encrypt_password(user_info.password, table_information.at(0).val2);
+            cout << (table_information.at(0).val0) << endl;
+            cout << get_hex_string(table_information.at(0).val1) << endl;
+            if(user_info.password.compare(table_information.at(0).val1) == 0){
+                login_correct = true;
+            }
+            else{
+                cout << "Login information incorrect" << endl;
+            }
+        }
+        else{
+            cout << "Login information incorrect" << endl;
+        }
+    }
+    user_info.correct_format = login_correct;
+    driver.close_database();
+    return user_info;
 }
 
-void attempt_register(){
+void attempt_register(const char *databaseName, string tableName){
+    sql_driver driver;
+    driver.open_database(databaseName);
     login_package user_info = request_input();
-    
+    if(user_info.correct_format){
+        lowercase_convert(user_info.username);
+        
+        User_t new_user;
+        new_user.username = user_info.username;
+        new_user.salt = generate_salt();
+        new_user.password = encrypt_password(user_info.password, new_user.salt);
+        
+        cout << get_hex_string(new_user.salt) << endl;
+        cout << get_hex_string(new_user.password) << endl;
+        
+        driver.insert_user(tableName, new_user);
+    }
+    else{
+        cout << "Failed to create user" << endl;
+    }
+    driver.close_database();
 }
 
 login_package request_input(){
@@ -54,5 +99,11 @@ bool valid_credentials(string username, string password, size_t bytes){       //
         }
     }
     return true;
+}
+
+void lowercase_convert(string &word){
+    for(int i = 0; i < word.length(); i++){
+        word.at(i) = tolower(word.at(i));
+    }
 }
 

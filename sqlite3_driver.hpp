@@ -29,7 +29,7 @@ typedef struct{
     string sender;
     string time_stamp;
     string message;
-    int read;  //0 for false , 1 for true
+    int read;  // 0 for unread , 1 for read
     string password;
     string salt;
 } Message_t;

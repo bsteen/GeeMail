@@ -1,9 +1,11 @@
 #include "login.hpp"
-#include "sqlite3_driver.hpp"
+#include "email.hpp"
 
 // Global Variables
+const char *databaseName = "databases/GeeMail.db";
 sql_driver mysql_driver;
-// Progression flagss
+login_package user;
+// Progression flags
 bool correct_login = false;
 bool logged_in = false;
 bool quit = false;
@@ -29,21 +31,57 @@ int get_input_number(){
     return stoi(input);
 }
 
+void sanitize_user(){
+    user.username.clear();
+    user.password.clear();
+    user.correct_format = false;
+}
+
 void home_page(){
     int user_input = -1;
     cout << "What would you like to do?" << endl << "1. Login" << endl << "2. Register" << endl << "0. Quit Program" << endl;
     user_input = get_input_number();
     if(user_input == 1){
-        attempt_login();
-        
-        // login = request_input();
-        // login_user(login);
+        user = attempt_login(databaseName, "Users");
+        if(user.correct_format){
+            correct_login = true;
+        }
+        else{
+            correct_login = false;
+            sanitize_user();
+        }
     }
     else if(user_input == 2){
-        attempt_register();
-        // register
+        correct_login = false;
+        attempt_register(databaseName, "Users");
     }
     else if(user_input == 0){
+        correct_login = false;
+        quit = true;
+    }
+    else{
+        correct_login = false;
+        cout << "Invalid command" << endl;
+    }
+}
+
+void user_home(){
+    int user_input = -1;
+    cout << "What would you like to do?" << endl << "1. Check messages" << endl << "2. Write a message" << endl << "3. Log out" << "0. Quit Program" << endl;
+    user_input = get_input_number();
+    if(user_input == 1){
+        // view inbox (list of emails)
+    }
+    else if(user_input == 2){
+        // write an email
+    }
+    else if(user_input == 3){
+        logged_in = false;
+        correct_login = false;
+    }
+    else if(user_input == 0){
+        logged_in = false;
+        correct_login = false;
         quit = true;
     }
     else{
@@ -51,61 +89,25 @@ void home_page(){
     }
 }
 
-void login_user(login_package login){
-    if(login.correct_format){
-        vector<bucket8_t> table_information;
-        mysql_driver.conditional_search("Users", "username", login.username, table_information);
-        if(table_information.size() == 1){
-            verify_password(login, )
-            // encrypt password input here
-            if(login.password.compare(table_information.at(0).val1) == 0){
-                correct_login = true;
-            }
-            else{
-                cout << "Login information incorrect" << endl;
-            }
-        }
-        else{
-            cout << "Login information incorrect" << endl;
-        }
-    }
-}
-
 int main(){
-    /* Make the driver */
-    const char *databaseName = "databases/GeeMail.db";
-    int rc;
-    string sqlcmd;
-    
     /* open database */
     mysql_driver.open_database(databaseName);
     
-    /*Making a table*/
+    /*Making a table, if it doesn't alreadt exist*/
     mysql_driver.make_users_table("Users", "username", "password", "salt");
-    
-    /* Add test user */
-    User_t test;
-    test.username = "casey";
-    test.password = "cvorgcvorg";
-    test.salt = "1337";
-    mysql_driver.insert_user("Users", test);
-    
+
     /* Main operation */
     while(not quit){
-        login_package login;
         /* "Home page" */
-        while(not correct_login){
-            home_page();
+        home_page();
+        
+        if(correct_login){
+            logged_in = true;
+            cout << "Welcome back " << user.username << endl;
         }
-        logged_in = true;
-        cout << "Welcome back " << login.username << endl;
+        
         while(logged_in){
-            string instruction;
-            cout << "What would you like to do?" << endl << "1. Check messages" << endl << "2. Write a message" << endl << "3. Log out" << "0. Quit Program" << endl;
-            if(instruction == "3"){
-                logged_in = false;
-                correct_login = false;
-            }
+            user_home();
         }
     }
     

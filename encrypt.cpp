@@ -4,41 +4,42 @@
 #include <stdio.h>
 #include "encrypt.hpp"
 
+//The size of the salt to be generated
 #define SALT_BYTE_SIZE 32
 
-// // Helper function for get_hex_string
-// // Converts the lower 4 bits of a char into its hex representation
-// char to_hex_char(char input){
-//     switch(input & 0xf){
-//         case 10:
-//             return 'a';
-//         case 11:
-//             return 'b';
-//         case 12:
-//             return 'c';
-//         case 13:
-//             return 'd';
-//         case 14:
-//             return 'e';
-//         case 15:
-//             return 'f';
-//         default:
-//             return input + 48;
-//     }
-// }
+// Helper function for get_hex_string
+// Converts the lower 4 bits of a char into its hex representation
+char to_hex_char(char input){
+    switch(input & 0xf){
+        case 10:
+            return 'a';
+        case 11:
+            return 'b';
+        case 12:
+            return 'c';
+        case 13:
+            return 'd';
+        case 14:
+            return 'e';
+        case 15:
+            return 'f';
+        default:
+            return input + 48;
+    }
+}
 
-// // Just used to test the output of the encryption functions
-// // Converts an ASCII string into a string of its hex values
-// string get_hex_string(string input){
-//     string hex_string = "";
+// Just used to test the output of the encryption functions
+// Converts an ASCII string into a string of its hex values
+string get_hex_string(string input){
+    string hex_string = "";
     
-//     for(int i = 0; i < input.length(); i++){
-//         hex_string += to_hex_char(input[i] >> 4 & 0xf);
-//         hex_string += to_hex_char(input[i] & 0xf);
-//     }
+    for(int i = 0; i < input.length(); i++){
+        hex_string += to_hex_char(input[i] >> 4 & 0xf);
+        hex_string += to_hex_char(input[i] & 0xf);
+    }
     
-//     return hex_string;
-// }
+    return hex_string;
+}
 
 // Generates a random, 256 bit salt using /dev/urandom
 string generate_salt(){
@@ -59,7 +60,7 @@ string generate_salt(){
 }   
 
 // Returns the SHA256 hashed version of the salted password
-// Salt should be 256 bits (use the generate_salt function) if password is to stored
+// Salt should be 256 bits (use the generate_salt function) if password is to stored in database
 string encrypt_password(string raw_password, string salt){
     string raw_salt = raw_password + salt;
     char hash_buffer[32];
@@ -76,7 +77,7 @@ string encrypt_password(string raw_password, string salt){
     return hashed;
 }
 
-// Encrypts a message using SALSA20 and the shared password (SHA256 hashed) as the key
+// Encrypts a message using SALSA20 and the shared password as the key 256 bit key
 string encrypt_message(string raw_message, string raw_shared_password){
     gcry_error_t gcryError;
     gcry_cipher_hd_t hd;

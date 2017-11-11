@@ -6,10 +6,10 @@ with that receipient. When they read a message let them select the message someh
 IMPORTANT: do not ever store passwords, messages, or passphrases in plaintext, this is an encrypted messaging system. The rule sets in play for this stage are FIO and ERR.
 
 To do:
-
-Casey:
-- input sanitization for logged-in instructions
-    
 - Make email.cpp
     -Reading, writing, deleting email
     -Calls the encryption functions as needed
+
+Casey:
+- input sanitization for logged-in instructions
+

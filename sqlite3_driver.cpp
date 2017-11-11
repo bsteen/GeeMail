@@ -136,7 +136,7 @@ void sql_driver::quick_table_view(string tableName){
 
 
 void sql_driver::insert_user(string tableName,User_t newUser){
-    char buffer [100];
+    char buffer [512]; // Check bufffer size if there is stack smashing
     int rc;
     
     // const char* data = "Callback function called";
