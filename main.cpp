@@ -139,6 +139,8 @@ void printImage(){
     while(getline(in, line)){
         cout << line << endl;
     }
+    
+    in.close();
     return;
 }
 
@@ -170,6 +172,7 @@ int main(){
     }
     
     cout << "Closing GeeMail..." << endl << "Brought to you by: " << endl;
+    mysql_driver.close_database();
     printImage();
     
     return 0;
