@@ -7,6 +7,5 @@ IMPORTANT: do not ever store passwords, messages, or passphrases in plaintext, t
 
 To do:
 - email.cpp
-    -display_inbox_new
     -read_email
     -delete_email

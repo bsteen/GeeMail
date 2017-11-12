@@ -46,6 +46,15 @@ static int callback_view_all(void *ptr, int argc, char **argv, char **azColName)
     return 0;
 } 
 
+static int callback_count_rows (void *ptr,int argc, char **argv, char **azColName){
+    int *count = reinterpret_cast<int *>(ptr);
+    
+    char *row_count = argv[0];
+    // cout<<row_count;
+    *count = stoi(row_count);
+    return 0;
+}
+
 // CLASS STUFF============================
 //PUBLIC FUNCIONS
 sql_driver::sql_driver(){}
@@ -55,9 +64,9 @@ void sql_driver::open_database(const char * db_name){
     /*open database*/
     rc = sqlite3_open(db_name, &db);
     if( rc ) {
-        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        // fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
     } else {
-        fprintf(stderr, "Opened database successfully %d\n",rc);
+        // fprintf(stderr, "Opened database successfully %d\n",rc);
     }
 }
 
@@ -121,10 +130,10 @@ void sql_driver::quick_table_view(string tableName){
     char *zErrMsg = 0;
     rc = sqlite3_exec(db,sql_cmd,callback_view_all,0,&zErrMsg);
     if (rc != SQLITE_OK){
-        fprintf(stderr,"Failed to show table: %s\n",zErrMsg);
+        // fprintf(stderr,"Failed to show table: %s\n",zErrMsg);
         sqlite3_free(zErrMsg);
     }else{
-        fprintf(stdout,"Operation done successfully\n");
+        // fprintf(stdout,"Operation done successfully\n");
     }
 }
 
@@ -230,6 +239,31 @@ void sql_driver::delete_entry(string tableName,string column_id,string condition
 
 
 //SEARCH FUNCTIONS ☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺
+int sql_driver::get_row_count(string tableName){
+    const char * tname = tableName.c_str();
+    char buffer[1000];
+    char * sql_cmd;
+    int row_count = -1;
+    
+    sprintf(buffer,
+    "SELECT Count(*) FROM %s ;",tname);
+    sql_cmd = buffer;
+    
+    int rc;
+    char* zErrMsg;
+    rc = sqlite3_exec(db,sql_cmd,callback_count_rows,&row_count,&zErrMsg);
+    
+    if( rc != SQLITE_OK ) {
+        // fprintf(stderr, "could not get the row count: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    } else {
+        // fprintf(stdout, "Operation done successfully\n");
+    }
+    
+    return row_count;
+}
+
+
 void sql_driver::get_all_usernames(string tableName,vector<bucket8_t> &list){
     char buffer[200];
     char * sql_cmd;
@@ -302,9 +336,9 @@ void sql_driver::execute_cmd(const char *sql_cmd, const char *debug_mssg, void *
     rc = sqlite3_exec(db,sql_cmd,callback,callback_data,&zErrMsg);
     
     if( rc != SQLITE_OK ) {
-        fprintf(stderr, debug_mssg, zErrMsg);
+        // fprintf(stderr, debug_mssg, zErrMsg);
         sqlite3_free(zErrMsg);
     } else {
-        fprintf(stdout, "Operation done successfully\n");
+        // fprintf(stdout, "Operation done successfully\n");
     }
 }

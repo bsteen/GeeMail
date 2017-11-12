@@ -60,10 +60,10 @@ login_package request_input(){
     string user_in, pass_in;
     int user_count, pass_count;
     
-    cout << "Enter username: " << endl;
+    cout << "Enter username: ";
     getline(cin, user_in);
 
-    cout << "Enter password: " << endl;
+    cout << "Enter password: ";
     getline(cin, pass_in);
     
     login_package login_attempt;

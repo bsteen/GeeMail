@@ -1,5 +1,6 @@
 #include "login.hpp"
 #include "email.hpp"
+#include <fstream>
 
 // Global Variables
 const char *databaseName = "databases/GeeMail.db";
@@ -8,6 +9,7 @@ login_package user;
 // Progression flags
 bool correct_login = false;
 bool logged_in = false;
+bool viewing_inbox = false;
 bool quit = false;
 
 // Gets up to 2 input numbers from the user and returns them as ints
@@ -65,6 +67,29 @@ void home_page(){
     }
 }
 
+// instructions once inbox is shown; for inbox variable, 1 is new only, 2 is all
+void inbox_control(int inbox){
+    int user_input = -1;
+    cout << "What would you like to do?" << endl << "1. Read a message" << endl << "2. Delete a message" << endl << "3. Return to previous menu" << endl;
+    user_input = get_input_number();
+    if(user_input == 1){
+        cout << "Which email would you like to read? ";
+        int email_number = get_input_number();
+        read_email(mysql_driver, user.username, inbox, email_number);
+    }
+    else if(user_input == 2){
+        cout << "Which email would you like to delete? ";
+        int email_number = get_input_number();
+        delete_email(mysql_driver, user.username, inbox, email_number);
+    }
+    else if(user_input == 3){
+        viewing_inbox = false;
+    }
+    else{
+        cout << "Invalid command" << endl;
+    }
+}
+
 void user_home(){
     int user_input = -1;
     cout << "What would you like to do?" << endl << "1. Check inbox" << endl << "2. Write a message" << endl << "3. Log out" << endl << "0. Quit Program" << endl;
@@ -72,11 +97,20 @@ void user_home(){
     if(user_input == 1){
         cout << endl << "1. View inbox (new)" << endl << "2. View inbox (all)" << endl;
         int message_choice = get_input_number();
-        if(message_choice == 1){
-            // view new (list of emails)
-        }
-        else if(message_choice == 2){
-            display_inbox_all(mysql_driver, user.username);
+        viewing_inbox = true;
+        while(viewing_inbox){
+            if(message_choice == 1){
+                display_inbox_new(mysql_driver, user.username);
+                inbox_control(message_choice);
+            }
+            else if(message_choice == 2){
+                display_inbox_all(mysql_driver, user.username);
+                inbox_control(message_choice);
+            }
+            else{
+                cout << "Invalid command!" << endl;
+                viewing_inbox = false;
+            }
         }
     }
     else if(user_input == 2){
@@ -94,6 +128,18 @@ void user_home(){
     else{
         cout << "Invalid command" << endl;
     }
+}
+
+void printImage(){
+    ifstream in("squid.txt");
+    if(!in){
+        return;
+    }
+    string line;
+    while(getline(in, line)){
+        cout << line << endl;
+    }
+    return;
 }
 
 int main(){
@@ -123,6 +169,8 @@ int main(){
         }
     }
     
-    cout << "Closing GeeMail" << endl;
+    cout << "Closing GeeMail..." << endl << "Brought to you by: " << endl;
+    printImage();
+    
     return 0;
 }

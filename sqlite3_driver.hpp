@@ -70,6 +70,7 @@ class sql_driver{
         void delete_entry(string tableName,string column_id,string condition);
         
         // search functions
+        int get_row_count(string tableName);
         void get_all_usernames(string tableName,vector<bucket8_t> &list);
         void conditional_search(string tableName,string column_id,string contition,vector<bucket8_t> &bucket);
         void double_condition_search(string tableName,string column_id1,string condition1,string column_id2,string condition2,vector<bucket8_t> &bucket);
