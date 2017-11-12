@@ -12,4 +12,3 @@ To do:
 
 Casey:
 - input sanitization for logged-in instructions
-

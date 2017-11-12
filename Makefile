@@ -20,3 +20,6 @@ sqlite3_driver.o: sqlite3_driver.cpp
 
 clean:
 	rm -f *.o *.out GeeMail
+	
+clean-database:
+	rm -f databases/GeeMail.db

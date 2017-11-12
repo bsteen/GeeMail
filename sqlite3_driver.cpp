@@ -1,5 +1,5 @@
 #include "sqlite3_driver.hpp"
-// #include <sqlite3.h>
+#include "encrypt.hpp"
 
 sqlite3 *db;
 
@@ -8,30 +8,26 @@ static int callback(void *ptr, int argc, char **argv, char **azColName){
     vector<bucket8_t> *list = reinterpret_cast<vector<bucket8_t>*>(ptr);
     // cout<<"after casting the pointer"<<endl;
     bucket8_t b;
-    
     b.val0 = argv[0]?argv[0]:"";
     if(argc>1){
         b.val1 = argv[1]?argv[1]:"";
     }
     if(argc>2){
-        b.val1 = argv[1]?argv[1]:"";
-    }
-    if(argc>3){
         b.val2 = argv[2]?argv[2]:"";
     }
-    if(argc>4){
+    if(argc>3){
         b.val3 = argv[3]?argv[3]:"";
     }
-    if(argc>5){
+    if(argc>4){
         b.val4 = argv[4]?argv[4]:"";
     }
-    if(argc>6){
+    if(argc>5){
         b.val5 = argv[5]?argv[5]:"";
     }
-    if(argc>7){
+    if(argc>6){
         b.val6 = argv[6]?argv[6]:"";
     }
-    if(argc>8){
+    if(argc>7){
         b.val7 = argv[7]?argv[7]:"";
     }
     list->push_back(b);
@@ -143,18 +139,26 @@ void sql_driver::insert_user(string tableName,User_t newUser){
     const char* tname = tableName.c_str();
     const char* username = newUser.username.c_str();
     const char* password = newUser.password.c_str();
-    const char* salt    = newUser.salt.c_str();
+    const char* salt = newUser.salt.c_str();
+    string u = username;
+    string p = password;
+    string s = salt;
+    
     int id = 0;
     
     char * sql_cmd;
           /* Create SQL statement */
+    // sprintf(buffer,
+    // "INSERT INTO %s (username,password,salt)"\
+    // "VALUES ('%s', '%s', '%s');",
+    // tname,username,password,salt);
     sprintf(buffer,
     "INSERT INTO %s (username,password,salt)"\
     "VALUES ('%s', '%s', '%s');",
     tname,username,password,salt);
     sql_cmd = buffer;
    /* Execute SQL statement */
-   execute_cmd(sql_cmd,"Failed to insert new user: %s\n",0);
+   execute_cmd(sql_cmd, "Failed to insert new user: %s\n", 0);
     
 }
 
@@ -261,8 +265,6 @@ void sql_driver::conditional_search(string tableName,string column_id,string con
     bucket.clear();
     
     execute_cmd(sql_cmd,"Failed to get results: %s\n",&bucket);
-    
-    
 }
 
 void sql_driver::double_condition_search(string tableName,string column_id1,string condition1,string column_id2,string condition2,vector<bucket8_t> &bucket){
@@ -280,10 +282,7 @@ void sql_driver::double_condition_search(string tableName,string column_id1,stri
     sql_cmd = buffer;
     bucket.clear();
     execute_cmd(sql_cmd,"Failed to find double condtion: %s\n",&bucket);
-    
 }
-
-
 
 //delete them tables $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 void sql_driver::drop_table(string tableName){
@@ -297,11 +296,10 @@ void sql_driver::drop_table(string tableName){
     sql_cmd = buffer;
       /* Execute SQL statement */
     execute_cmd(sql_cmd,"falied to drop table: %s\n",0);
-
 }
 
 //PRIVATE FUNCIONS
-void sql_driver::execute_cmd(const char* sql_cmd,const char * debug_mssg,void * callback_data){
+void sql_driver::execute_cmd(const char *sql_cmd, const char *debug_mssg, void *callback_data){
     int rc;
     char *zErrMsg = 0;
     

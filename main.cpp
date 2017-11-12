@@ -42,7 +42,7 @@ void home_page(){
     cout << "What would you like to do?" << endl << "1. Login" << endl << "2. Register" << endl << "0. Quit Program" << endl;
     user_input = get_input_number();
     if(user_input == 1){
-        user = attempt_login(databaseName, "Users");
+        user = attempt_login(mysql_driver, "Users");
         if(user.correct_format){
             correct_login = true;
         }
@@ -53,7 +53,7 @@ void home_page(){
     }
     else if(user_input == 2){
         correct_login = false;
-        attempt_register(databaseName, "Users");
+        attempt_register(mysql_driver, "Users");
     }
     else if(user_input == 0){
         correct_login = false;
@@ -67,13 +67,20 @@ void home_page(){
 
 void user_home(){
     int user_input = -1;
-    cout << "What would you like to do?" << endl << "1. Check messages" << endl << "2. Write a message" << endl << "3. Log out" << "0. Quit Program" << endl;
+    cout << "What would you like to do?" << endl << "1. Check inbox" << endl << "2. Write a message" << endl << "3. Log out" << endl << "0. Quit Program" << endl;
     user_input = get_input_number();
     if(user_input == 1){
-        // view inbox (list of emails)
+        cout << "1. View inbox (new)" << endl << "2. View inbox (all)" << endl;
+        int message_choice = get_input_number();
+        if(message_choice == 1){
+            // view new (list of emails)
+        }
+        else if(message_choice == 2){
+            // view messages()
+        }
     }
     else if(user_input == 2){
-        // write an email
+        send_email(mysql_driver, user.username);
     }
     else if(user_input == 3){
         logged_in = false;
@@ -95,6 +102,11 @@ int main(){
     
     /*Making a table, if it doesn't alreadt exist*/
     mysql_driver.make_users_table("Users", "username", "password", "salt");
+    vector<bucket8_t> users;
+    
+    for(int i = 0; i < users.size(); i++){
+        cout << users.at(i).val0 << endl;
+    }
 
     /* Main operation */
     while(not quit){
