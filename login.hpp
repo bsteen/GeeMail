@@ -1,3 +1,6 @@
+#ifndef LOGIN_HPP
+#define LOGIN_HPP
+
 #include <string>
 #include "encrypt.hpp"
 #include "sqlite3_driver.hpp"
@@ -14,3 +17,5 @@ void attempt_register(sql_driver &driver, string tableName);
 login_package request_input();
 bool valid_credentials(string username, string password, size_t bytes);
 void lowercase_convert(string &word);
+
+#endif

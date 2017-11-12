@@ -86,15 +86,15 @@ void sql_driver::make_users_table(string tablename,string c1,string c2, string c
     execute_cmd(sql_cmd,"Failed to create users table: %s\n",0);
 }
 
-void sql_driver::make_email_table(string tableName,string receiver,string sender,string time_stamp,string message,string read,string password,string salt){
+void sql_driver::make_email_table(string tableName,string receiver,string sender,string time_stamp,string message,string read){
     const char * tname = tableName.c_str();
     const char * rcvr = receiver.c_str();
     const char * sndr = sender.c_str();
     const char * t_s = time_stamp.c_str();
     const char * mssg = message.c_str();
     const char *  rd  = read.c_str();
-    const char * pass = password.c_str();
-    const char * slt = salt.c_str();
+    // const char * pass = password.c_str();
+    // const char * slt = salt.c_str();
     char buffer[500];
     char * sql_cmd;
     sprintf(buffer,
@@ -103,10 +103,8 @@ void sql_driver::make_email_table(string tableName,string receiver,string sender
     "%s TEXT NOT NULL,"\
     "%s TEXT NOT NULL UNIQUE,"\
     "%s TEXT NOT NULL,"\
-    "%s INT NOT NULL,"\
-    "%s TEXT NOT NULL,"\
     "%s INT NOT NULL);",
-    tname,rcvr,sndr,t_s,mssg,rd,pass,slt);
+    tname,rcvr,sndr,t_s,mssg,rd);
     sql_cmd = buffer;
     execute_cmd(sql_cmd,"failed to create email Table: %s\n",0);
 }
@@ -168,15 +166,13 @@ void sql_driver::insert_email(string tableName,Message_t email){
     const char * sndr = email.sender.c_str();
     const char * t_s = email.time_stamp.c_str();
     const char * mssg = email.message.c_str();
-    // const char *  rd  = email.read.c_str();
-    const char * pass = email.password.c_str();
-    const char * slt = email.salt.c_str();
-    char buffer[500];
+
+    char buffer[50000];
     char * sql_cmd;
     sprintf(buffer,
-    "INSERT INTO %s (receiver,sender,time_stamp,message,read,password,salt)"\
-    "VALUES ('%s','%s','%s','%s','%d','%s','%s');",
-    tname,rcvr,sndr,t_s,mssg,email.read,pass,slt);
+    "INSERT INTO %s (receiver,sender,time_stamp,message,read)"\
+    "VALUES ('%s','%s','%s','%s','%d');",
+    tname,rcvr,sndr,t_s,mssg,email.read);
     
     sql_cmd = buffer;
     execute_cmd(sql_cmd,"Failed to insert element to email table: %s\n",0);

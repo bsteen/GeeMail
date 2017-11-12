@@ -70,13 +70,13 @@ void user_home(){
     cout << "What would you like to do?" << endl << "1. Check inbox" << endl << "2. Write a message" << endl << "3. Log out" << endl << "0. Quit Program" << endl;
     user_input = get_input_number();
     if(user_input == 1){
-        cout << "1. View inbox (new)" << endl << "2. View inbox (all)" << endl;
+        cout << endl << "1. View inbox (new)" << endl << "2. View inbox (all)" << endl;
         int message_choice = get_input_number();
         if(message_choice == 1){
             // view new (list of emails)
         }
         else if(message_choice == 2){
-            // view messages()
+            display_inbox_all(mysql_driver, user.username);
         }
     }
     else if(user_input == 2){

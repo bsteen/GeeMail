@@ -1,3 +1,5 @@
+#ifndef ENCRYPT_HPP
+#define ENCRYPT_HPP
 #include <string>
 using namespace std;
 
@@ -13,3 +15,5 @@ string get_hex_string(string ascii_hex_string);
 
 char hex_to_char(char input);
 string get_ascii_string(string input);
+
+#endif

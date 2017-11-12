@@ -36,6 +36,7 @@ login_package attempt_login(sql_driver &driver, string tableName){
 void attempt_register(sql_driver &driver, string tableName){
     // sql_driver driver;
     // driver.open_database(databaseName);
+    cout << "Please enter new username and password" << endl;
     login_package user_info = request_input();
     if(user_info.correct_format){
         lowercase_convert(user_info.username);
@@ -46,7 +47,7 @@ void attempt_register(sql_driver &driver, string tableName){
         new_user.password = encrypt_password(user_info.password, new_user.salt);
         
         driver.insert_user(tableName, new_user);
-        driver.make_email_table(new_user.username + "Emails", "receiver", "sender", "timestamp", "message", "isread", "password", "salt");
+        driver.make_email_table(new_user.username + "Emails", "receiver", "sender", "time_stamp", "message", "read");
     }
     else{
         cout << "Failed to create user" << endl;
@@ -104,4 +105,3 @@ void lowercase_convert(string &word){
         word.at(i) = tolower(word.at(i));
     }
 }
-

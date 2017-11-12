@@ -1,6 +1,8 @@
 /*
 this is a class to use sqlite commands using cpp
 */
+#ifndef SQLITE3_DRIVER_HPP
+#define SQLITE3_DRIVER_HPP
 
 #include <iostream>
 #include <sqlite3.h>
@@ -30,8 +32,6 @@ typedef struct{
     string time_stamp;
     string message;
     int read;  // 0 for unread , 1 for read
-    string password;
-    string salt;
 } Message_t;
 
 typedef struct{
@@ -50,7 +50,7 @@ class sql_driver{
         void close_database();
         //making tables
         void make_users_table(string tablename,string c1,string c2,string c3);
-        void make_email_table(string tableName,string receiver,string sender,string time_stamp,string message,string read,string password,string salt);
+        void make_email_table(string tableName,string receiver,string sender,string time_stamp,string message,string read);
         
         //display tables (no filters, no data saved to program)
         void quick_table_view(string tableName);
@@ -79,3 +79,5 @@ class sql_driver{
     private:
         void execute_cmd(const char* sql_cmd,const char * debug_mssg,void * callback_data);
 };
+
+#endif
