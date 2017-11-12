@@ -1,6 +1,6 @@
-# Project 2: Gee-Mail. (Due date Nov. 13th)
+# Project 2: Gee-Mail (Due date Nov. 13th)
 ## Created by: Casey Campbell, Miguel Hernandez, and Benjamin Steenkamer
-
+## CPEG 676 - Fall 2017, Dr. Novocin
 Write a secure asynchronous (same-machine) message platform. Here is what is must do: When loaded prompt the user to sign-in or register.
 When a user registers get their username and password. When a user logs in ask for username and validate password. If login fails, choose your response. Once logged in, tell them
 the number of messages they have, list the users that have sent them a message. (You can limit this to one message from a given sender or add a timestamp or even a title to messages
