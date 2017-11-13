@@ -186,6 +186,12 @@ void send_email(sql_driver &driver, string sender){
         cout << "Write message below:" << endl;
         getline(cin, raw_message);
         
+        if(raw_message.length() > 4000){
+            cout << "Email too long; keep under 4000 characters. Email not sent!" << endl;
+            raw_message.clear();
+            return;
+        }
+        
         // User enters in shared password
         cout << "Enter shared password:" << endl;
         getline(cin, password);
