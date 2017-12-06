@@ -48,6 +48,7 @@ void attempt_register(sql_driver &driver, string tableName){
         
         driver.insert_user(tableName, new_user);
         driver.make_email_table(new_user.username + "Emails", "receiver", "sender", "time_stamp", "message", "read");
+        cout << "User successfully created" << endl;
     }
     else{
         cout << "Failed to create user" << endl;

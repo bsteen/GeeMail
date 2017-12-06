@@ -173,7 +173,7 @@ bool valid_username(sql_driver &driver, string &username){
 void send_email(sql_driver &driver, string sender){
     // Have user enter recipient username
     string user_in;
-    cout << "Enter receiver username: " << endl;
+    cout << "Enter receiver username: ";
     getline(cin, user_in);
     // Check if user name exists
     if(valid_username(driver, user_in)){
@@ -193,7 +193,7 @@ void send_email(sql_driver &driver, string sender){
         }
         
         // User enters in shared password
-        cout << "Enter shared password:" << endl;
+        cout << "Enter shared password: ";
         getline(cin, password);
         
         // Encrypt email with shared password
