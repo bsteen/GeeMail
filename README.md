@@ -10,5 +10,5 @@ with that receipient. When they read a message let them select the message someh
 IMPORTANT: do not ever store passwords, messages, or passphrases in plaintext, this is an encrypted messaging system. The rule sets in play for this stage are FIO and ERR.  
   
 **\*Developer's note**: After a code audit, several exploitable bugs have been found that can be used to gain access to an arbitrary user's account and delete their emails.
-This program was created for academic purposes and should not be to store or send sensitive messages in any capacity.
+This program was created for academic purposes and should not be used to store or send sensitive messages in any capacity.
 I should further clarify that the intention of this project was to never actually achieve a truly secure system. Its purpose was to create a message system as best we could and then audit it as a "red team" exercise to find vulnerabilities, which we did.
